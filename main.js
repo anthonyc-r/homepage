@@ -138,7 +138,7 @@ Terminal.prototype.evalCmd = function(cmdstr){
 
 window.onload = function(){
 	//stop backspace and space from doing browser shit
-	$(document).on("keydown", function(e){
+	document.addEventListener('keydown', function(e){
 		if(e.which == 8 || e.which == 32){
 			e.preventDefault();
 		}
