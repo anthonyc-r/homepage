@@ -60,10 +60,10 @@ Terminal.prototype.backspaceHandler = function(e){
 Terminal.prototype.resizeHandler = function(e){
 	console.log('window resized');
 	//unfuck everything
-	winWidth = $(window).innerWidth()-3;
-	winHeight = $(window).innerHeight()-3;
-	$('#main').attr('width', winWidth);
-	$('#main').attr('height', winHeight);
+	winWidth = window.innerWidth-3;
+	winHeight = window.innerHeight-3;
+	document.getElementById('main').setAttribute('width', winWidth);
+	document.getElementById('main').setAttribute('height', winHeight);
 	
 	//it's javascript, who cares where I'm pulling my variables from :^)
 	horoW = winWidth/3;
@@ -77,14 +77,14 @@ Terminal.prototype.start = function(contxt){
 	horo.src = 'horo.png';
 	
 	//arbitrary values ahoy
-	winWidth = $(window).innerWidth()-3;
-	winHeight = $(window).innerHeight()-3;
+	winWidth = window.innerWidth-3;
+	winHeight = window.innerHeight-3;
 	
 	linespace = 25;
 	fntsz = 25;
 	
-	$('#main').attr('width', winWidth);
-	$('#main').attr('height', winHeight);
+	document.getElementById('main').setAttribute('width', winWidth);
+	document.getElementById('main').setAttribute('height', winHeight);
 	
 	//draw background
 	ctx.fillStyle = '#CCCCCC';
@@ -119,7 +119,8 @@ Terminal.prototype.evalCmd = function(cmdstr){
 	status = '**CMDFAIL**';
 	switch(cmd){
 		case 'fnd':
-			window.open(this.searchEng+str);
+			srch = str.toString().replace(/\,/g, ' ');
+			window.open(this.searchEng+srch);
 			status = '**FNDEXEC**';
 			break;
 		case 'chn':
@@ -135,7 +136,7 @@ Terminal.prototype.evalCmd = function(cmdstr){
 	return status;
 }
 
-$(document).ready(function(){
+window.onload = function(){
 	//stop backspace and space from doing browser shit
 	$(document).on("keydown", function(e){
 		if(e.which == 8 || e.which == 32){
@@ -146,4 +147,4 @@ $(document).ready(function(){
 	ctx = cnvs.getContext('2d');
 	term = new Terminal(ctx);
 	term.start();
-});
+}
