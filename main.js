@@ -82,12 +82,14 @@ Terminal.prototype.start = function(contxt){
 	
 	linespace = 25;
 	fntsz = 25;
+	bgClr = '#00AA00';
+	txtClr = '#28F781';
 	
 	document.getElementById('main').setAttribute('width', winWidth);
 	document.getElementById('main').setAttribute('height', winHeight);
 	
 	//draw background
-	ctx.fillStyle = '#CCCCCC';
+	ctx.fillStyle = txtClr;
 	ctx.fillRect(0, 0, winWidth, winHeight);
 	//draw image
 	horo.onload = function(){
@@ -96,11 +98,11 @@ Terminal.prototype.start = function(contxt){
 
 	}
 	setInterval(function(termObj){
-		ctx.fillStyle = '#CCCCCC';
+		ctx.fillStyle = bgClr;
 		ctx.fillRect(0, 0, winWidth, winHeight);
 		
 		ctx.font = fntsz+'px monospace';
-		ctx.fillStyle = '#00CC00';
+		ctx.fillStyle = txtClr;
 		for(var i = 0; i < termObj.lineHistory.length; ++i){
 			ctx.fillText('>'+termObj.lineHistory[i], 20, (i*linespace)+40);
 		}
@@ -128,6 +130,10 @@ Terminal.prototype.evalCmd = function(cmdstr){
 			srch = srch? 'catalog#s='+srch : '';
 			window.open('http://boards.4chan.org/'+str[0]+'/'+srch);
 			status = '**CHNEXEC**';
+			break;
+		case 'clr':
+			this.lineHistory = [];
+			status = '**CLREXEC**';
 			break;
 		case 'hlp':
 			this.lineHistory = this.lineHistory.concat(this.help);
