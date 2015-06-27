@@ -11,11 +11,14 @@ function Terminal(ctx){
 		'**************************************************',
 		'*fnd <search string>      -- google shit         *',
 		'*chn <board> <opt search> -- go to board         *',
+		'*ytb <opt search>         -- go to youtube       *',
+		'*clr                      -- clear screen        *',
 		'*hlp                      -- display this message*',
 		'**************************************************'
 	]
 	this.maxHist = 20;
 	//gfx
+	this.frameTrack = 0;
 	this.ctx = ctx;
 	console.log('THIS REFERS TO: '+this);
 }
@@ -71,9 +74,17 @@ Terminal.prototype.resizeHandler = function(e){
 }
 
 Terminal.prototype.start = function(contxt){
-	overlay = new Image();
+	overlayFrames = 4;
+	overlay0 = new Image();
+	overlay1 = new Image();
+	overlay2 = new Image();
+	overlay3 = new Image();
+	overlays = [overlay0, overlay1, overlay2, overlay3];
 	horo = new Image();
-	overlay.src = 'overlay.png';
+	overlay0.src = 'overlays/overlay0.png';
+	overlay1.src = 'overlays/overlay1.png';
+	overlay2.src = 'overlays/overlay2.png';
+	overlay3.src = 'overlays/overlay3.png';
 	horo.src = 'horo.png';
 	
 	//arbitrary values ahoy
@@ -82,7 +93,7 @@ Terminal.prototype.start = function(contxt){
 	
 	linespace = 25;
 	fntsz = 25;
-	bgClr = '#00AA00';
+	bgClr = '#001A00';
 	txtClr = '#28F781';
 	
 	document.getElementById('main').setAttribute('width', winWidth);
@@ -101,14 +112,15 @@ Terminal.prototype.start = function(contxt){
 		ctx.fillStyle = bgClr;
 		ctx.fillRect(0, 0, winWidth, winHeight);
 		
-		ctx.font = fntsz+'px monospace';
+		ctx.font = fntsz+'px fsex';
 		ctx.fillStyle = txtClr;
 		for(var i = 0; i < termObj.lineHistory.length; ++i){
-			ctx.fillText('>'+termObj.lineHistory[i], 20, (i*linespace)+40);
+			ctx.fillText('>'+termObj.lineHistory[i], 25, (i*linespace)+40);
 		}
-		ctx.fillText(termObj.linePrompt+termObj.currentLine, 20, (termObj.lineHistory.length*linespace)+40);
+		ctx.fillText(termObj.linePrompt+termObj.currentLine, 25, (termObj.lineHistory.length*linespace)+40);
 		ctx.drawImage(horo, winWidth-horoW, winHeight-horoH, horoW, horoH);
-		ctx.drawImage(overlay, 0, 0, winWidth, winHeight);
+		ctx.drawImage(overlays[0+termObj.frameTrack], 0, 0, winWidth, winHeight);
+		termObj.frameTrack = (termObj.frameTrack + 1)%overlayFrames;
 	}, 100, this);
 }
 
@@ -130,6 +142,12 @@ Terminal.prototype.evalCmd = function(cmdstr){
 			srch = srch? 'catalog#s='+srch : '';
 			window.open('http://boards.4chan.org/'+str[0]+'/'+srch);
 			status = '**CHNEXEC**';
+			break;
+		case 'ytb':
+			srch = str.toString().replace(/\,/g, ' ');
+			srch = srch? 'results?search_query='+srch : '';
+			window.open('http://www.youtube.com/'+srch);
+			status = '**YTBEXEC**';
 			break;
 		case 'clr':
 			this.lineHistory = [];
