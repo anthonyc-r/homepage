@@ -9,7 +9,7 @@ function Terminal(ctx){
 	this.reqs = [];
 	this.help = [
 		'**************************************************',
-		'*fnd <search string>      -- google shit         *',
+		'*fnd <search string>      -- google stuff        *',
 		'*chn <board> <opt search> -- go to board         *',
 		'*ytb <opt search>         -- go to youtube       *',
 		'*clr                      -- clear screen        *',
@@ -93,14 +93,14 @@ Terminal.prototype.start = function(contxt){
 	
 	linespace = 25;
 	fntsz = 25;
-	bgClr = '#001A00';
+	bgClr = '#002500';
 	txtClr = '#28F781';
 	
 	document.getElementById('main').setAttribute('width', winWidth);
 	document.getElementById('main').setAttribute('height', winHeight);
 	
 	//draw background
-	ctx.fillStyle = txtClr;
+	ctx.fillStyle = bgClr;
 	ctx.fillRect(0, 0, winWidth, winHeight);
 	//draw image
 	horo.onload = function(){
